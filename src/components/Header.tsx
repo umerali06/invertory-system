@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell, ChevronDown, LogOut, Search, User } from 'lucide-react';
+import { Bell, ChevronDown, LogOut, Menu, Search, User } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { AppUser, HeaderNotification } from '@/lib/app-types';
@@ -11,11 +11,13 @@ export default function Header({
   lowStockCount,
   recentActivityCount,
   notifications,
+  onOpenSidebar,
 }: {
   user: AppUser;
   lowStockCount: number;
   recentActivityCount: number;
   notifications: HeaderNotification[];
+  onOpenSidebar?: () => void;
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationDrawerOpen, setNotificationDrawerOpen] = useState(false);
@@ -43,20 +45,29 @@ export default function Header({
   }, []);
 
   return (
-    <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10 w-full">
-      <div className="flex-1 max-w-xl">
-        <form action="/inventory" className="relative">
+    <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6 lg:px-8">
+      <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
+        <button
+          onClick={onOpenSidebar}
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition-colors hover:bg-slate-50 lg:hidden"
+          title="Open navigation"
+          aria-label="Open navigation"
+        >
+          <Menu size={20} />
+        </button>
+
+        <form action="/inventory" className="relative w-full max-w-xl">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input
             type="text"
             name="q"
             placeholder="Search products, ISBN, or SKU..."
-            className="w-full pl-10 pr-4 py-2 bg-slate-100/80 border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+            className="w-full min-w-0 rounded-lg border-transparent bg-slate-100/80 py-2 pl-10 pr-4 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200"
           />
         </form>
       </div>
 
-      <div className="flex items-center gap-4 ml-4">
+      <div className="ml-3 flex items-center gap-2 sm:ml-4 sm:gap-4">
         <div className="relative" ref={notificationRef}>
           <button
             onClick={() => setNotificationDrawerOpen((current) => !current)}
@@ -125,7 +136,7 @@ export default function Header({
         <div className="relative" ref={profileRef}>
           <div
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-3 pl-4 border-l border-slate-200 cursor-pointer hover:bg-slate-50 p-1.5 rounded-lg transition-colors select-none"
+            className="flex cursor-pointer select-none items-center gap-2 rounded-lg border-l border-slate-200 p-1.5 pl-2 transition-colors hover:bg-slate-50 sm:gap-3 sm:pl-4"
           >
             <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm shrink-0">
               {initials}
@@ -134,7 +145,7 @@ export default function Header({
               <p className="text-sm font-medium text-slate-700 leading-none">{user.name}</p>
               <p className="text-xs text-slate-500 mt-1">{user.role}</p>
             </div>
-            <ChevronDown size={16} className={`text-slate-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+            <ChevronDown size={16} className={`hidden text-slate-400 transition-transform sm:block ${dropdownOpen ? 'rotate-180' : ''}`} />
           </div>
 
           {dropdownOpen && (

@@ -73,7 +73,7 @@ export default function AutomationShell({
             <p className="font-semibold text-slate-800 text-sm">Automation Session</p>
             <p className="text-sm text-slate-500">
               {activeSession
-                ? `${activeSession.name} · ${activeSession.processedItems} items / ${activeSession.processedUnits} units`
+                ? `${activeSession.name} - ${activeSession.processedItems} items / ${activeSession.processedUnits} units`
                 : 'Open this panel to start a tracked automation session.'}
             </p>
           </div>
@@ -121,7 +121,7 @@ export default function AutomationShell({
                   <div key={session.id} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
                     <p className="font-medium text-slate-800 text-sm">{session.name}</p>
                     <p className="text-xs text-slate-500 mt-1">{session.startedAtLabel}</p>
-                    <p className="text-xs text-slate-500 mt-1">{session.processedItems} items · {session.processedUnits} units</p>
+                    <p className="text-xs text-slate-500 mt-1">{session.processedItems} items - {session.processedUnits} units</p>
                   </div>
                 )) : (
                   <div className="text-sm text-slate-500">No sessions recorded yet.</div>
@@ -131,7 +131,7 @@ export default function AutomationShell({
           </div>
         )}
 
-        <nav className="flex items-center gap-6 px-6 pt-2 bg-white border-t border-slate-100">
+        <nav className="flex items-center gap-4 overflow-x-auto whitespace-nowrap border-t border-slate-100 bg-white px-4 pt-2 sm:gap-6 sm:px-6">
           {tabs.map((tab) => (
             <Link
               key={tab.name}
@@ -152,3 +152,4 @@ export default function AutomationShell({
     </div>
   );
 }
+
